@@ -58,6 +58,4 @@ Uygulama, `http://localhost:5000` adresinde çalışacaktır.
 4. Sonuç, gerçek zamanlı olarak sayfada görüntülenecektir.
 5. İsterseniz "İndir" butonunu kullanarak üretilen dosyayı indirebilirsiniz.
 
-```
 Gemini API anahtarı almak için [aistudio](https://aistudio.google.com/app/apikey) adresini ziyaret edin.
-```
