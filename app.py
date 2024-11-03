@@ -26,20 +26,21 @@ socketio = SocketIO(app)
 def index():
     return render_template("index.html")
 
-# Ortaokul formundan gelen veriyi işlemek için rota
 @app.route("/note_send", methods=["POST"])
 def note_send():
     data = request.json
+    room = data.get("room")
     response_text = generate_ai_response(data, "ortaokul")
-    socketio.emit("ai_response", {"response": response_text})
+    socketio.emit("ai_response", {"response": response_text}, room=room)
     return jsonify({"response": response_text})
 
 # Lise formundan gelen veriyi işlemek için rota
 @app.route("/test_send", methods=["POST"])
 def test_send():
     data = request.json
+    room = data.get("room")
     response_text = generate_ai_response(data, "lise")
-    socketio.emit("ai_response", {"response": response_text})
+    socketio.emit("ai_response", {"response": response_text}, room=room)
     return jsonify({"response": response_text})
 
 def generate_ai_response(data, level):
@@ -68,6 +69,18 @@ def generate_ai_response(data, level):
         open(f"./files/ai-response_{class_select}_{lesson}_{topic}_{question_type}.txt", "w").write(response)
 
     return response
+
+# Kullanıcı bağlandığında `join_room` kullanarak odaya katılım sağlanır
+@socketio.on("connect")
+def on_connect():
+    join_room(request.sid)
+    print(f"Client {request.sid} connected and joined room {request.sid}")
+
+# Kullanıcı bağlantıyı kestiğinde odadan ayrılır
+@socketio.on("disconnect")
+def on_disconnect():
+    leave_room(request.sid)
+    print(f"Client {request.sid} disconnected and left room {request.sid}")
 
 @app.route("/download", methods=["POST"])
 def download_text():

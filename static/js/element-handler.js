@@ -32,9 +32,16 @@ function test_page() {
 
 let globalData = {};
 
-// Ortaokul formunu gönderme
+const socket = io({transports: ["websocket"]});
+let sid;
+
+socket.on("connect", function() {
+    sid = socket.id;
+});
+
 function note_send() {
     const data = {
+        room: sid,
         class: document.getElementById("note-classSelect").value,
         lesson: document.getElementById("note-lessonSelect").value,
         topic: document.getElementById("note-topicSelect").value,
@@ -55,6 +62,7 @@ function note_send() {
 // Lise formunu gönderme
 function test_send() {
     const data = {
+        room: sid,
         class: document.getElementById("test-classSelect").value,
         lesson: document.getElementById("test-lessonSelect").value,
         topic: document.getElementById("test-topicSelect").value,
@@ -73,7 +81,6 @@ function test_send() {
     }).catch(error => console.error("Error:", error));
 }
 
-const socket = io();
 socket.on("ai_response", function(data) {
     document.getElementById("ai-response-text").value = data.response;
 });
