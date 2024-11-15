@@ -13,6 +13,7 @@ Bu proje, Flask ve Flask-SocketIO kullanarak eğitim materyali üretmek için ge
   - Flask
   - Flask-SocketIO
   - google-generativeai
+  - python-dotenv
 
 ## Kurulum
 
