@@ -3,6 +3,8 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from io import BytesIO
 import os
 import google.generativeai as genai
+from dotenv import load_dotenv
+load_dotenv()
 
 generation_config = {
   "temperature": 0.9,
@@ -18,7 +20,7 @@ model = genai.GenerativeModel(
 )
 
 app = Flask(__name__)
-gemini_api = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 socketio = SocketIO(app)
 
 # Ana sayfa rotası
